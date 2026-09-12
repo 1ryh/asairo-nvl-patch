@@ -5,6 +5,8 @@ An experimental native NVL presentation patch for **きっと、澄みわたる�
 Ordinary scenario dialogue uses a large reading area with rounded corners, a black background at approximately **55% opacity**, and the CG visible through it. The appearance is based on **いつか、届く、あの空に。** (Itsusora). Japanese text, ruby, voices, history, choices and timing continue through the target game's native engine.
 
 **Status:** implemented and tested on one exact executable under Wine/Proton. The extended run passed **7,766 boundary checks across 21,829 message preparations**. Full-route compatibility remains unverified; see [validation and limitations](docs/TESTING.md).
+
+
 <img width="801" height="598" alt="image" src="https://github.com/user-attachments/assets/5988722f-4f7d-47ad-ae73-8860db71ed6a" />
 
 
