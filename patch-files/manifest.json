@@ -1,0 +1,28 @@
+{
+  "files": [
+    {
+      "path": "Scenario/01game.msc",
+      "sha256": "3643eb9894d4dabc588d04764b5a0bb8f4fe4a9bad0f8f38b3317c5b97bcf2db"
+    },
+    {
+      "path": "Scenario/01game_HIY.msc",
+      "sha256": "3643eb9894d4dabc588d04764b5a0bb8f4fe4a9bad0f8f38b3317c5b97bcf2db"
+    },
+    {
+      "path": "Scenario/01game_OTH.msc",
+      "sha256": "3643eb9894d4dabc588d04764b5a0bb8f4fe4a9bad0f8f38b3317c5b97bcf2db"
+    },
+    {
+      "path": "Scenario/01game_NAK.msc",
+      "sha256": "3643eb9894d4dabc588d04764b5a0bb8f4fe4a9bad0f8f38b3317c5b97bcf2db"
+    },
+    {
+      "path": "BG/NV00.mgr",
+      "sha256": "a41a6cb8968615401fe01289dfcc130389f31c6aba6c39783a74074d9a0d893e"
+    },
+    {
+      "path": "winmm.dll",
+      "sha256": "90bab49d8ff07b5a70a27ca28d36289dfa179a7236cb8d4007244463e49693ee"
+    }
+  ]
+}

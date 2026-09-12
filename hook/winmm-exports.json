@@ -1,0 +1,762 @@
+{
+  "source": "/usr/share/steam/compatibilitytools.d/proton-cachyos-slr/files/lib/wine/i386-windows/winmm.dll",
+  "sha256": "8506a1e6fee3c75a09be6942140c20cc0a9b04c6e5273107288f1db39f23bc5c",
+  "exports": [
+    {
+      "ordinal": 5,
+      "name": "CloseDriver"
+    },
+    {
+      "ordinal": 6,
+      "name": "DefDriverProc"
+    },
+    {
+      "ordinal": 7,
+      "name": "DriverCallback"
+    },
+    {
+      "ordinal": 8,
+      "name": "DrvClose"
+    },
+    {
+      "ordinal": 9,
+      "name": "DrvDefDriverProc"
+    },
+    {
+      "ordinal": 10,
+      "name": "DrvGetModuleHandle"
+    },
+    {
+      "ordinal": 11,
+      "name": "DrvOpen"
+    },
+    {
+      "ordinal": 12,
+      "name": "DrvOpenA"
+    },
+    {
+      "ordinal": 13,
+      "name": "DrvSendMessage"
+    },
+    {
+      "ordinal": 14,
+      "name": "GetDriverFlags"
+    },
+    {
+      "ordinal": 15,
+      "name": "GetDriverModuleHandle"
+    },
+    {
+      "ordinal": 16,
+      "name": "OpenDriver"
+    },
+    {
+      "ordinal": 17,
+      "name": "OpenDriverA"
+    },
+    {
+      "ordinal": 18,
+      "name": "PlaySound"
+    },
+    {
+      "ordinal": 19,
+      "name": "PlaySoundA"
+    },
+    {
+      "ordinal": 20,
+      "name": "PlaySoundW"
+    },
+    {
+      "ordinal": 21,
+      "name": "SendDriverMessage"
+    },
+    {
+      "ordinal": 22,
+      "name": "auxGetDevCapsA"
+    },
+    {
+      "ordinal": 23,
+      "name": "auxGetDevCapsW"
+    },
+    {
+      "ordinal": 24,
+      "name": "auxGetNumDevs"
+    },
+    {
+      "ordinal": 25,
+      "name": "auxGetVolume"
+    },
+    {
+      "ordinal": 26,
+      "name": "auxOutMessage"
+    },
+    {
+      "ordinal": 27,
+      "name": "auxSetVolume"
+    },
+    {
+      "ordinal": 28,
+      "name": "joyConfigChanged"
+    },
+    {
+      "ordinal": 29,
+      "name": "joyGetDevCapsA"
+    },
+    {
+      "ordinal": 30,
+      "name": "joyGetDevCapsW"
+    },
+    {
+      "ordinal": 31,
+      "name": "joyGetNumDevs"
+    },
+    {
+      "ordinal": 32,
+      "name": "joyGetPos"
+    },
+    {
+      "ordinal": 33,
+      "name": "joyGetPosEx"
+    },
+    {
+      "ordinal": 34,
+      "name": "joyGetThreshold"
+    },
+    {
+      "ordinal": 35,
+      "name": "joyReleaseCapture"
+    },
+    {
+      "ordinal": 36,
+      "name": "joySetCapture"
+    },
+    {
+      "ordinal": 37,
+      "name": "joySetThreshold"
+    },
+    {
+      "ordinal": 38,
+      "name": "mciDriverNotify"
+    },
+    {
+      "ordinal": 39,
+      "name": "mciDriverYield"
+    },
+    {
+      "ordinal": 40,
+      "name": "mciExecute"
+    },
+    {
+      "ordinal": 41,
+      "name": "mciFreeCommandResource"
+    },
+    {
+      "ordinal": 42,
+      "name": "mciGetCreatorTask"
+    },
+    {
+      "ordinal": 43,
+      "name": "mciGetDeviceIDA"
+    },
+    {
+      "ordinal": 44,
+      "name": "mciGetDeviceIDFromElementIDA"
+    },
+    {
+      "ordinal": 45,
+      "name": "mciGetDeviceIDFromElementIDW"
+    },
+    {
+      "ordinal": 46,
+      "name": "mciGetDeviceIDW"
+    },
+    {
+      "ordinal": 47,
+      "name": "mciGetDriverData"
+    },
+    {
+      "ordinal": 48,
+      "name": "mciGetErrorStringA"
+    },
+    {
+      "ordinal": 49,
+      "name": "mciGetErrorStringW"
+    },
+    {
+      "ordinal": 50,
+      "name": "mciGetYieldProc"
+    },
+    {
+      "ordinal": 51,
+      "name": "mciLoadCommandResource"
+    },
+    {
+      "ordinal": 52,
+      "name": "mciSendCommandA"
+    },
+    {
+      "ordinal": 53,
+      "name": "mciSendCommandW"
+    },
+    {
+      "ordinal": 54,
+      "name": "mciSendStringA"
+    },
+    {
+      "ordinal": 55,
+      "name": "mciSendStringW"
+    },
+    {
+      "ordinal": 56,
+      "name": "mciSetDriverData"
+    },
+    {
+      "ordinal": 57,
+      "name": "mciSetYieldProc"
+    },
+    {
+      "ordinal": 58,
+      "name": "midiConnect"
+    },
+    {
+      "ordinal": 59,
+      "name": "midiDisconnect"
+    },
+    {
+      "ordinal": 60,
+      "name": "midiInAddBuffer"
+    },
+    {
+      "ordinal": 61,
+      "name": "midiInClose"
+    },
+    {
+      "ordinal": 62,
+      "name": "midiInGetDevCapsA"
+    },
+    {
+      "ordinal": 63,
+      "name": "midiInGetDevCapsW"
+    },
+    {
+      "ordinal": 64,
+      "name": "midiInGetErrorTextA"
+    },
+    {
+      "ordinal": 65,
+      "name": "midiInGetErrorTextW"
+    },
+    {
+      "ordinal": 66,
+      "name": "midiInGetID"
+    },
+    {
+      "ordinal": 67,
+      "name": "midiInGetNumDevs"
+    },
+    {
+      "ordinal": 68,
+      "name": "midiInMessage"
+    },
+    {
+      "ordinal": 69,
+      "name": "midiInOpen"
+    },
+    {
+      "ordinal": 70,
+      "name": "midiInPrepareHeader"
+    },
+    {
+      "ordinal": 71,
+      "name": "midiInReset"
+    },
+    {
+      "ordinal": 72,
+      "name": "midiInStart"
+    },
+    {
+      "ordinal": 73,
+      "name": "midiInStop"
+    },
+    {
+      "ordinal": 74,
+      "name": "midiInUnprepareHeader"
+    },
+    {
+      "ordinal": 75,
+      "name": "midiOutCacheDrumPatches"
+    },
+    {
+      "ordinal": 76,
+      "name": "midiOutCachePatches"
+    },
+    {
+      "ordinal": 77,
+      "name": "midiOutClose"
+    },
+    {
+      "ordinal": 78,
+      "name": "midiOutGetDevCapsA"
+    },
+    {
+      "ordinal": 79,
+      "name": "midiOutGetDevCapsW"
+    },
+    {
+      "ordinal": 80,
+      "name": "midiOutGetErrorTextA"
+    },
+    {
+      "ordinal": 81,
+      "name": "midiOutGetErrorTextW"
+    },
+    {
+      "ordinal": 82,
+      "name": "midiOutGetID"
+    },
+    {
+      "ordinal": 83,
+      "name": "midiOutGetNumDevs"
+    },
+    {
+      "ordinal": 84,
+      "name": "midiOutGetVolume"
+    },
+    {
+      "ordinal": 85,
+      "name": "midiOutLongMsg"
+    },
+    {
+      "ordinal": 86,
+      "name": "midiOutMessage"
+    },
+    {
+      "ordinal": 87,
+      "name": "midiOutOpen"
+    },
+    {
+      "ordinal": 88,
+      "name": "midiOutPrepareHeader"
+    },
+    {
+      "ordinal": 89,
+      "name": "midiOutReset"
+    },
+    {
+      "ordinal": 90,
+      "name": "midiOutSetVolume"
+    },
+    {
+      "ordinal": 91,
+      "name": "midiOutShortMsg"
+    },
+    {
+      "ordinal": 92,
+      "name": "midiOutUnprepareHeader"
+    },
+    {
+      "ordinal": 93,
+      "name": "midiStreamClose"
+    },
+    {
+      "ordinal": 94,
+      "name": "midiStreamOpen"
+    },
+    {
+      "ordinal": 95,
+      "name": "midiStreamOut"
+    },
+    {
+      "ordinal": 96,
+      "name": "midiStreamPause"
+    },
+    {
+      "ordinal": 97,
+      "name": "midiStreamPosition"
+    },
+    {
+      "ordinal": 98,
+      "name": "midiStreamProperty"
+    },
+    {
+      "ordinal": 99,
+      "name": "midiStreamRestart"
+    },
+    {
+      "ordinal": 100,
+      "name": "midiStreamStop"
+    },
+    {
+      "ordinal": 101,
+      "name": "mixerClose"
+    },
+    {
+      "ordinal": 102,
+      "name": "mixerGetControlDetailsA"
+    },
+    {
+      "ordinal": 103,
+      "name": "mixerGetControlDetailsW"
+    },
+    {
+      "ordinal": 104,
+      "name": "mixerGetDevCapsA"
+    },
+    {
+      "ordinal": 105,
+      "name": "mixerGetDevCapsW"
+    },
+    {
+      "ordinal": 106,
+      "name": "mixerGetID"
+    },
+    {
+      "ordinal": 107,
+      "name": "mixerGetLineControlsA"
+    },
+    {
+      "ordinal": 108,
+      "name": "mixerGetLineControlsW"
+    },
+    {
+      "ordinal": 109,
+      "name": "mixerGetLineInfoA"
+    },
+    {
+      "ordinal": 110,
+      "name": "mixerGetLineInfoW"
+    },
+    {
+      "ordinal": 111,
+      "name": "mixerGetNumDevs"
+    },
+    {
+      "ordinal": 112,
+      "name": "mixerMessage"
+    },
+    {
+      "ordinal": 113,
+      "name": "mixerOpen"
+    },
+    {
+      "ordinal": 114,
+      "name": "mixerSetControlDetails"
+    },
+    {
+      "ordinal": 115,
+      "name": "mmGetCurrentTask"
+    },
+    {
+      "ordinal": 116,
+      "name": "mmTaskBlock"
+    },
+    {
+      "ordinal": 117,
+      "name": "mmTaskCreate"
+    },
+    {
+      "ordinal": 118,
+      "name": "mmTaskSignal"
+    },
+    {
+      "ordinal": 119,
+      "name": "mmTaskYield"
+    },
+    {
+      "ordinal": 120,
+      "name": "mmioAdvance"
+    },
+    {
+      "ordinal": 121,
+      "name": "mmioAscend"
+    },
+    {
+      "ordinal": 122,
+      "name": "mmioClose"
+    },
+    {
+      "ordinal": 123,
+      "name": "mmioCreateChunk"
+    },
+    {
+      "ordinal": 124,
+      "name": "mmioDescend"
+    },
+    {
+      "ordinal": 125,
+      "name": "mmioFlush"
+    },
+    {
+      "ordinal": 126,
+      "name": "mmioGetInfo"
+    },
+    {
+      "ordinal": 127,
+      "name": "mmioInstallIOProc16"
+    },
+    {
+      "ordinal": 128,
+      "name": "mmioInstallIOProcA"
+    },
+    {
+      "ordinal": 129,
+      "name": "mmioInstallIOProcW"
+    },
+    {
+      "ordinal": 130,
+      "name": "mmioOpenA"
+    },
+    {
+      "ordinal": 131,
+      "name": "mmioOpenW"
+    },
+    {
+      "ordinal": 132,
+      "name": "mmioRead"
+    },
+    {
+      "ordinal": 133,
+      "name": "mmioRenameA"
+    },
+    {
+      "ordinal": 134,
+      "name": "mmioRenameW"
+    },
+    {
+      "ordinal": 135,
+      "name": "mmioSeek"
+    },
+    {
+      "ordinal": 136,
+      "name": "mmioSendMessage"
+    },
+    {
+      "ordinal": 137,
+      "name": "mmioSetBuffer"
+    },
+    {
+      "ordinal": 138,
+      "name": "mmioSetInfo"
+    },
+    {
+      "ordinal": 139,
+      "name": "mmioStringToFOURCCA"
+    },
+    {
+      "ordinal": 140,
+      "name": "mmioStringToFOURCCW"
+    },
+    {
+      "ordinal": 141,
+      "name": "mmioWrite"
+    },
+    {
+      "ordinal": 142,
+      "name": "mmsystemGetVersion"
+    },
+    {
+      "ordinal": 143,
+      "name": "sndPlaySoundA"
+    },
+    {
+      "ordinal": 144,
+      "name": "sndPlaySoundW"
+    },
+    {
+      "ordinal": 145,
+      "name": "timeBeginPeriod"
+    },
+    {
+      "ordinal": 146,
+      "name": "timeEndPeriod"
+    },
+    {
+      "ordinal": 147,
+      "name": "timeGetDevCaps"
+    },
+    {
+      "ordinal": 148,
+      "name": "timeGetSystemTime"
+    },
+    {
+      "ordinal": 149,
+      "name": "timeGetTime"
+    },
+    {
+      "ordinal": 150,
+      "name": "timeKillEvent"
+    },
+    {
+      "ordinal": 151,
+      "name": "timeSetEvent"
+    },
+    {
+      "ordinal": 152,
+      "name": "waveInAddBuffer"
+    },
+    {
+      "ordinal": 153,
+      "name": "waveInClose"
+    },
+    {
+      "ordinal": 154,
+      "name": "waveInGetDevCapsA"
+    },
+    {
+      "ordinal": 155,
+      "name": "waveInGetDevCapsW"
+    },
+    {
+      "ordinal": 156,
+      "name": "waveInGetErrorTextA"
+    },
+    {
+      "ordinal": 157,
+      "name": "waveInGetErrorTextW"
+    },
+    {
+      "ordinal": 158,
+      "name": "waveInGetID"
+    },
+    {
+      "ordinal": 159,
+      "name": "waveInGetNumDevs"
+    },
+    {
+      "ordinal": 160,
+      "name": "waveInGetPosition"
+    },
+    {
+      "ordinal": 161,
+      "name": "waveInMessage"
+    },
+    {
+      "ordinal": 162,
+      "name": "waveInOpen"
+    },
+    {
+      "ordinal": 163,
+      "name": "waveInPrepareHeader"
+    },
+    {
+      "ordinal": 164,
+      "name": "waveInReset"
+    },
+    {
+      "ordinal": 165,
+      "name": "waveInStart"
+    },
+    {
+      "ordinal": 166,
+      "name": "waveInStop"
+    },
+    {
+      "ordinal": 167,
+      "name": "waveInUnprepareHeader"
+    },
+    {
+      "ordinal": 168,
+      "name": "waveOutBreakLoop"
+    },
+    {
+      "ordinal": 169,
+      "name": "waveOutClose"
+    },
+    {
+      "ordinal": 170,
+      "name": "waveOutGetDevCapsA"
+    },
+    {
+      "ordinal": 171,
+      "name": "waveOutGetDevCapsW"
+    },
+    {
+      "ordinal": 172,
+      "name": "waveOutGetErrorTextA"
+    },
+    {
+      "ordinal": 173,
+      "name": "waveOutGetErrorTextW"
+    },
+    {
+      "ordinal": 174,
+      "name": "waveOutGetID"
+    },
+    {
+      "ordinal": 175,
+      "name": "waveOutGetNumDevs"
+    },
+    {
+      "ordinal": 176,
+      "name": "waveOutGetPitch"
+    },
+    {
+      "ordinal": 177,
+      "name": "waveOutGetPlaybackRate"
+    },
+    {
+      "ordinal": 178,
+      "name": "waveOutGetPosition"
+    },
+    {
+      "ordinal": 179,
+      "name": "waveOutGetVolume"
+    },
+    {
+      "ordinal": 180,
+      "name": "waveOutMessage"
+    },
+    {
+      "ordinal": 181,
+      "name": "waveOutOpen"
+    },
+    {
+      "ordinal": 182,
+      "name": "waveOutPause"
+    },
+    {
+      "ordinal": 183,
+      "name": "waveOutPrepareHeader"
+    },
+    {
+      "ordinal": 184,
+      "name": "waveOutReset"
+    },
+    {
+      "ordinal": 185,
+      "name": "waveOutRestart"
+    },
+    {
+      "ordinal": 186,
+      "name": "waveOutSetPitch"
+    },
+    {
+      "ordinal": 187,
+      "name": "waveOutSetPlaybackRate"
+    },
+    {
+      "ordinal": 188,
+      "name": "waveOutSetVolume"
+    },
+    {
+      "ordinal": 189,
+      "name": "waveOutUnprepareHeader"
+    },
+    {
+      "ordinal": 190,
+      "name": "waveOutWrite"
+    },
+    {
+      "ordinal": 2,
+      "name": null
+    },
+    {
+      "ordinal": 3,
+      "name": null
+    },
+    {
+      "ordinal": 4,
+      "name": null
+    }
+  ]
+}
