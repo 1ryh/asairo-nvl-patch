@@ -1,0 +1,66 @@
+name: Windows installer
+
+on:
+  push:
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag to publish (leave blank to build an artifact only)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: x64
+      - name: Test installer
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Install build dependencies
+        run: python -m pip install -r installer/requirements-build.txt
+      - name: Build standalone installer
+        run: python installer/build.py
+      - name: Smoke-test the packaged executable
+        run: python -c "import subprocess; subprocess.run(['dist/Asairo-NVL-Installer.exe', '--self-test'], check=True, timeout=90)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Asairo-NVL-Windows
+          path: |
+            dist/Asairo-NVL-Installer.exe
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.release_tag != '')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: Asairo-NVL-Windows
+          path: release-assets
+      - name: Publish experimental release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9.-]+)?$ ]]; then
+            echo 'Use a version such as v0.1.0 or v0.1.0-beta.1.' >&2
+            exit 1
+          fi
+          gh release create "$RELEASE_TAG" release-assets/Asairo-NVL-Installer.exe release-assets/SHA256SUMS.txt \
+            --target "$GITHUB_SHA" --title "Asairo Native NVL $RELEASE_TAG" \
+            --notes-file installer/RELEASE-NOTES.md --prerelease

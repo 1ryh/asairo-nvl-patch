@@ -11,6 +11,9 @@ FILES=[
     'hook/nvl_guard.c','hook/build.sh','hook/generate_forwarders.py','hook/winmm-exports.json',
     'patch-files/manifest.json','patch-files/winmm.dll',
     'tests/check_installation.py','.github/ISSUE_TEMPLATE/bug_report.md',
+    'install_windows.py','installer/__init__.py','installer/core.py',
+    'installer/build.py','installer/requirements-build.txt','installer/RELEASE-NOTES.md',
+    'tests/test_gui_installer.py','.github/workflows/windows-release.yml',
 ]
 def main():
     parser=argparse.ArgumentParser(description=__doc__)

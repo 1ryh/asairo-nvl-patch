@@ -29,12 +29,28 @@ Ordinary scenario dialogue uses a large reading area with rounded corners, a bla
   40457ef359392a16a7486cb31a0ff7b0446fd4463822847b5e0a5c5dd6e3ef24
   ```
 
-- **Python 3.11+** to generate and verify the patch resources. No third-party Python packages are required.
+- For the Windows installer: **64-bit Windows 10/11**. Python is bundled; you do not need to install it.
+- For installation from source or Linux/Wine: **Python 3.11+**. No third-party Python packages are required to generate the resources.
 - A setup that already runs the original game correctly, including Japanese text, fonts and audio. Fonts, codecs and game files are not supplied.
 
 The prebuilt `winmm.dll` is included; a compiler and Ghidra are **not required to play**. Windows instructions are below, with Linux/Wine instructions in a separate section. **Native Windows gameplay is not yet validated.** Existing gameplay results come from CachyOS Wine 11.0 (`proton-cachyos-slr`), and the proxy's WinMM forwarding catalog was built for that environment. Other executable versions and runtimes are not validated; see [validation and limitations](docs/TESTING.md).
 
 ## Installation on Windows
+
+Download **Asairo-NVL-Installer.exe** from [Releases](https://github.com/1ryh/asairo-nvl-patch/releases). Choose the executable asset, not the source-code ZIP.
+
+1. Copy your working game to a separate folder ending in `(Copy)`, such as `C:\Games\Asairo (Copy)`.
+2. Close the game and double-click **Asairo-NVL-Installer.exe**.
+3. Click **Choose folder…** and select the folder containing `asairo.exe`.
+4. Click **Install / Repair**. The installer generates and checks the patch resources and backs up saves automatically.
+5. Once the installer reports **NVL is active**, launch `asairo.exe` from the selected folder.
+
+No Python setup, terminal commands or manual patch-file copying is needed. **Check** shows the installation state; **Install / Repair** can complete a recognized partial installation. The installer refuses unsupported executables and conflicting overrides. Keep it for removing or reinstalling the patch later.
+
+The installer does not configure the original game's locale, fonts or codecs. Use the setup that already runs your original game. Windows gameplay remains experimental; check `nvl-hook-status.txt` in the game folder after launching.
+
+<details>
+<summary>Advanced: manual installation from source</summary>
 
 Download and extract this repository, or clone it. Open **PowerShell in the repository folder**. Stop and resolve any command error before continuing. These examples use `py -3`; if your Python installation provides `python` instead, substitute that command and make sure it is version 3.11 or newer.
 
@@ -95,6 +111,8 @@ Download and extract this repository, or clone it. Open **PowerShell in the repo
 
 If installation was interrupted, close the game and run the check again. An `INCOMPLETE` result with no unknown-file error can be repaired by copying all six files again and checking for `NVL`. Resolve any other error before copying or removing files.
 
+</details>
+
 ## Installation on Linux / Wine / Proton
 
 This workflow additionally requires Bash, `pgrep` from procps/procps-ng, `ja_JP.UTF-8`, a graphical session, and a compatible Wine/Proton runtime with the game's 32-bit dependencies. Prepare a **private Wine prefix inside the game copy** with Japanese fonts; the tested font is MS Gothic. Textractor is not required.
@@ -135,7 +153,7 @@ The launcher checks the payload, selects the native WinMM proxy, sets the Japane
 | `BG/NV00.mgr` | Generated rounded native panel |
 | `winmm.dll` | Version-checked forwarding proxy and scoped hooks |
 
-The executable and MPK archives are not edited. The Linux installer and launcher store timestamped backups in the copy's `_nvl_backups/` folder. Save snapshots accumulate across launches. On Windows, back up saves yourself before testing or changing patch versions.
+The executable and MPK archives are not edited. The graphical installer backs up saves and changed patch files in the copy's `_nvl_backups/` folder. The Linux installer backs up changed overrides, and its launcher also snapshots saves. Keep enough free space for backups. Manual installation from source requires manual backups.
 
 ## Controls
 
@@ -161,12 +179,19 @@ The native configuration screen still controls text speed, sound and skip behavi
 
 ### Windows
 
+Close the game, open **Asairo-NVL-Installer.exe**, select the patched copy, and click **Remove patch**. The installer backs up saves and the recognized patch files before removing them. It leaves the game executable, archives, saves and unrelated files in place. Use **Install / Repair** to re-enable the patch.
+
+<details>
+<summary>Manual removal without the graphical installer</summary>
+
 1. Close every instance of the game and back up your saves.
 2. From the repository folder, run `py -3 nvl-mode.py check --game "$GameCopy"`. A fully installed patch reports `NVL`. Stop on an unknown-file or version error.
 3. Back up the six installed files in the table above to a separate folder, preserving their relative paths. Then delete **only those six files** from the game copy. Keep the `Scenario` and `BG` folders and any other files inside them.
 4. Run the same check again; it should report `ADV`. Original archive resources now take effect.
 
 For a recognized `INCOMPLETE` installation, back up and remove only the listed files that are present, then check for `ADV`. To re-enable, follow the Windows installation steps again.
+
+</details>
 
 ### Linux / Wine / Proton
 
@@ -185,7 +210,7 @@ python3 nvl-mode.py enable --game "$GAME_COPY"
 
 ## Updating
 
-Close the game and disable the old patch using the instructions and manifest from that version. Keep its backups. Then update the repository, regenerate the resources, and install the new version. This avoids treating an older DLL as an unknown override. Do not mix files from different versions or change manifest hashes to suppress an error.
+Close the game and remove the old patch using that version’s installer (or its manual instructions and manifest). Keep its backups. Then download and run the new installer. For installation from source, update the repository and regenerate the resources before installing. This avoids treating an older DLL as an unknown override. Do not mix files from different versions or change manifest hashes to suppress an error.
 
 ## How it was made
 
@@ -236,7 +261,7 @@ The game copy receives `nvl-trace.bin` and `nvl-state.bin`. The Wine launcher ba
 | Symptom | Check |
 | --- | --- |
 | Unsupported executable | Compare the SHA-256; this patch supports one executable version. |
-| Missing payload file | Run `tools/prepare_payload.py` before installation. |
+| Missing payload file | Download the installer again. For source installs, run `tools/prepare_payload.py` first. |
 | `INCOMPLETE` state | Close the game and follow the repair or removal steps for your platform. |
 | Unknown override or symlink refusal | Check for another mod or redirected directory. The installer leaves it untouched. |
 | ADV appearance remains | Check for `NVL` and inspect `nvl-hook-status.txt`; use `launch-target.sh` on Wine. |
@@ -253,13 +278,16 @@ See [validation and limitations](docs/TESTING.md) for the exact test scope. Repo
 readme.md                  Installation and usage
 LICENSE                    MIT license for original project code
 docs/                      Engine notes and validation scope
+install_windows.py         Graphical installer entry point
+installer/                 Installation logic and release build configuration
 nvl-mode.py                Payload checks; Linux installation and rollback
 launch-target.sh           Private-prefix Wine launcher
 tools/                     Local resource generation and source export
 hook/                      Proxy source, export catalog and build scripts
 patch-files/manifest.json  Reviewed payload hashes
 patch-files/winmm.dll      Tested original-code proxy
-tests/                    Disposable installation checks
+tests/                     Disposable installation checks
+.github/workflows/         Windows build, packaging checks and release publishing
 ```
 
 To export a clean local source tree, choose a directory that does not already exist:
@@ -269,6 +297,14 @@ python3 tools/export_source.py --output /path/to/new/asairo-nvl-source
 ```
 
 The export includes the files above and a checksum manifest. It does not publish or contact GitHub. Generated resources, game installations, prefixes, saves, extracted material and local research artifacts are excluded from source export and version control. The development workspace may contain them locally; they are not repository dependencies to redistribute.
+
+## Building a Windows release
+
+The **Windows installer** GitHub Actions workflow builds the standalone executable on Windows, runs disposable installer tests, and smoke-tests the packaged GUI and bundled resources. It includes only the resource generator, runtime, manifest and original-code proxy; game-derived resources are generated on the user's machine.
+
+To publish, open **Actions → Windows installer → Run workflow** and enter a new tag such as `v0.1.0` in `release_tag`. Leave that field blank to build a downloadable workflow artifact without publishing. Pushing a `v*` tag also starts a release build. Successful release builds attach the executable and `SHA256SUMS.txt` to an experimental prerelease.
+
+For a local developer build on Windows, install the dependencies in `installer/requirements-build.txt`, then run `python installer/build.py`. End users do not need these tools. See [release notes](installer/RELEASE-NOTES.md) for the download instructions and validation limits.
 
 ## Contributing
 

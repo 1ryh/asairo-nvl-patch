@@ -1,7 +1,11 @@
 """Generate native overrides from the user-owned archive without writing game files."""
 import struct
-from mpk import entries
-from panel import rounded_panel
+if __package__:
+    from .mpk import entries
+    from .panel import rounded_panel
+else:
+    from mpk import entries
+    from panel import rounded_panel
 
 def generate(game):
     changes=[]

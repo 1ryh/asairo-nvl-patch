@@ -2,11 +2,11 @@
   "files": [
     {
       "path": ".gitignore",
-      "sha256": "ad9e9f8f3e36ddd79a4b6ebbceeb241a7b6ee4943e99eeafe4f878eaf16a6968"
+      "sha256": "41cc30cc42b1e4146cc300b1cd9fd3cd851dde4486bcc846d0f4d3ad5721d6e8"
     },
     {
       "path": "readme.md",
-      "sha256": "e5144e68bfe0ff90396da32088a00dfb31d811e744a283511b39b9ff32e8d02a"
+      "sha256": "7b910db9f5a2f5fc23af002729cee7a023db4f1e24d95d6d9d55fc3197afae8b"
     },
     {
       "path": "LICENSE",
@@ -46,7 +46,7 @@
     },
     {
       "path": "tools/resource_recipe.py",
-      "sha256": "20a39832e708b1a49860399aace0ddb37150047f3e491711392c3f4cd96f3708"
+      "sha256": "51e3f6df4606d1cfffd4bfa7ceebb430b334fff51b30e2ac486d142dd2cd6f3a"
     },
     {
       "path": "tools/prepare_payload.py",
@@ -54,7 +54,7 @@
     },
     {
       "path": "tools/export_source.py",
-      "sha256": "d9f1553609b58e91d0de6c6731002dc29a230d937b745047ff8dbc2523a65e67"
+      "sha256": "36d8d38e6a1705d735203319d96ee3ff6ad03f789b6d5743ae358f230aa7d468"
     },
     {
       "path": "hook/nvl_guard.c",
@@ -87,6 +87,38 @@
     {
       "path": ".github/ISSUE_TEMPLATE/bug_report.md",
       "sha256": "4474c4802c00ff40f161ed00f1d90759d193878aab1abac2052c308a6e027d73"
+    },
+    {
+      "path": "install_windows.py",
+      "sha256": "7b7a326e43d14f9c983c488ae40d128fc467605150571d23848b2147c9295714"
+    },
+    {
+      "path": "installer/__init__.py",
+      "sha256": "0216e62c5f9a1d3cd22b94dbf79036c44d95cf3c1a352ef9ff385b207c1d3428"
+    },
+    {
+      "path": "installer/core.py",
+      "sha256": "e2e9dbe151b3b2d1cce18fbd3bbde26bdb115b7cacc6470a8c545f883b2a600c"
+    },
+    {
+      "path": "installer/build.py",
+      "sha256": "7d66c454c42d76af3d47cf0405bc1fc621440bea7d58b292c40498f24ec1ad72"
+    },
+    {
+      "path": "installer/requirements-build.txt",
+      "sha256": "272e56cb5e3314a19104ebb9882d78a1b40ba39452e91633d2f8ba8158dc88f1"
+    },
+    {
+      "path": "installer/RELEASE-NOTES.md",
+      "sha256": "f908de7ca1ff4d94d761eb7bc3828f950fb7ffeb176a660e13218f04ea8cb8b3"
+    },
+    {
+      "path": "tests/test_gui_installer.py",
+      "sha256": "26db13289ea8d1680c355bf928044f9974f71c6316f87fb2c4d930637e7ad8ac"
+    },
+    {
+      "path": ".github/workflows/windows-release.yml",
+      "sha256": "e64445e8c6e5e7669c858387a092f5cb7365d037b2f2df805b2d765ecddad667"
     }
   ]
 }
