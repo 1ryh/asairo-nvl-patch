@@ -18,79 +18,113 @@ Ordinary scenario dialogue uses a large reading area with rounded corners, a bla
 - Original CP932/Shift-JIS parsing, glyph measurement, kinsoku, ruby and text controls.
 - Native centered/cinematic layouts, choices, backlog, auto, skip and save/load retained.
 - Reversible loose-resource overrides and two narrowly scoped runtime hooks.
-- Exact-version checks, refusal of unknown overrides, and backups before removal or replacement.
+- Exact-version and payload checks to identify unsupported executables and conflicting overrides.
 
 ## Requirements
 
-### To install and play
-
-- Your own complete, working installation of the game, copied into a **separate directory whose name ends in `(Copy)`**. Do not use a symlink to the original.
+- Your own complete, working installation of the game in a **separate folder whose name ends in `(Copy)`**, for example `C:\Games\Asairo (Copy)`. Copy the actual files; do not use a symlink or junction to the original installation.
 - The supported `asairo.exe`, with SHA-256:
 
   ```text
   40457ef359392a16a7486cb31a0ff7b0446fd4463822847b5e0a5c5dd6e3ef24
   ```
 
-- Linux, Bash, **Python 3.11+**, and `pgrep` from procps/procps-ng. The installer/resource generator needs no third-party Python packages.
-- A Wine/Proton installation capable of running the original game and its 32-bit dependencies. The tested environment is **CachyOS Wine 11.0**, supplied by `proton-cachyos-slr`.
-- An already prepared **private Wine prefix inside the game Copy**, with the game's normal dependencies and Japanese fonts. The tested font is **MS Gothic**. Fonts, codecs and Windows components are not supplied by this patch.
-- The `ja_JP.UTF-8` locale and a working graphical session. Audio playback additionally needs a working audio output.
+- **Python 3.11+** to generate and verify the patch resources. No third-party Python packages are required.
+- A setup that already runs the original game correctly, including Japanese text, fonts and audio. Fonts, codecs and game files are not supplied.
 
-The development prefix was a private clone of an existing Japanese-ready Textractor prefix. Textractor itself is not required. If cloning a prefix, close applications using the source first and localize profile-folder symlinks; do not run this patch against a shared original prefix. Setting up a new Wine installation or acquiring fonts is outside this patch's installer.
+The prebuilt `winmm.dll` is included; a compiler and Ghidra are **not required to play**. Windows instructions are below, with Linux/Wine instructions in a separate section. **Native Windows gameplay is not yet validated.** Existing gameplay results come from CachyOS Wine 11.0 (`proton-cachyos-slr`), and the proxy's WinMM forwarding catalog was built for that environment. Other executable versions and runtimes are not validated; see [validation and limitations](docs/TESTING.md).
 
-The prebuilt proxy is included; a compiler and Ghidra are **not required to play**. Other executable versions, native Windows and other Wine/Proton builds are not validated. The WinMM forwarding catalog is specific to the tested environment.
+## Installation on Windows
 
-## Installation
+Download and extract this repository, or clone it. Open **PowerShell in the repository folder**. Stop and resolve any command error before continuing. These examples use `py -3`; if your Python installation provides `python` instead, substitute that command and make sure it is version 3.11 or newer.
 
-Download or clone this repository. Run the following commands **from its root directory**.
+1. Make an independent copy of the working game, including its saves, then set the path:
 
-1. Make an independent Copy of the working game and set its absolute path:
-
-   ```bash
-   export GAME_COPY="$HOME/Games/Asairo (Copy)"
+   ```powershell
+   $GameCopy = "C:\Games\Asairo (Copy)"
    ```
 
-   This directory must already contain `asairo.exe`, `Scenario.mpk` and the rest of the original game. Changing the variable does not copy or install the game.
+   This folder must already contain `asairo.exe`, `Scenario.mpk` and the rest of the original game. Setting the variable does not copy or install the game. Keep the original installation and saves as your backup.
 
 2. Verify the executable:
 
-   ```bash
-   sha256sum "$GAME_COPY/asairo.exe"
+   ```powershell
+   Get-FileHash -Algorithm SHA256 -LiteralPath "$GameCopy\asairo.exe"
    ```
 
-   It must match the supported hash above. Do not bypass the version check.
+   The hash must match the supported hash above (letter case does not matter). Do not bypass the version check.
 
-3. Generate the native resources from your own Copy:
+3. Generate the patch resources from your own copy:
 
-   ```bash
-   python3 tools/prepare_payload.py --game "$GAME_COPY"
+   ```powershell
+   py -3 tools/prepare_payload.py --game "$GameCopy"
    ```
 
-   This reads `Scenario.mpk` and creates the reviewed files under `patch-files/`. It leaves the game unchanged and verifies every generated file against the manifest. Game-derived scripts and graphics are generated locally rather than distributed in the source package.
+   This reads `Scenario.mpk`, generates the files under `patch-files/`, and verifies them against the manifest without changing the game. Game-derived scripts and graphics are generated locally rather than distributed.
 
-4. Close every instance of the game, then install:
+4. Close every instance of the game, then check for conflicts:
 
-   ```bash
-   python3 nvl-mode.py enable --game "$GAME_COPY"
-   python3 nvl-mode.py check --game "$GAME_COPY"
+   ```powershell
+   py -3 nvl-mode.py check --game "$GameCopy"
    ```
 
-   The check should print `NVL`. Unknown loose overrides are refused rather than overwritten; review any existing mod conflict before proceeding.
+   A clean copy should report `ADV`. **Stop if the command reports an error**: unknown overrides must be reviewed before installing. `NVL` means all six patch files are already installed; `INCOMPLETE` means only some are present.
 
-5. Configure the launcher and start:
+5. For a clean `ADV` copy, install the six files listed below. In File Explorer, copy the generated `Scenario` and `BG` folders and `winmm.dll` from `patch-files` into the game copy, preserving the folder structure. Alternatively, run:
 
-   ```bash
-   export ASAIRO_GAME_DIR="$GAME_COPY"
-   export ASAIRO_PREFIX="$GAME_COPY/.wine-prepared"
-   export ASAIRO_WINE="/usr/share/steam/compatibilitytools.d/proton-cachyos-slr/files/bin/wine"
-   bash ./launch-target.sh
+   ```powershell
+   $PatchFiles = @(
+       "Scenario/01game.msc",
+       "Scenario/01game_HIY.msc",
+       "Scenario/01game_OTH.msc",
+       "Scenario/01game_NAK.msc",
+       "BG/NV00.mgr",
+       "winmm.dll"
+   )
+   foreach ($Relative in $PatchFiles) {
+       $Destination = Join-Path $GameCopy $Relative
+       New-Item -ItemType Directory -Force -Path (Split-Path $Destination) | Out-Null
+       Copy-Item -LiteralPath (Join-Path "patch-files" $Relative) -Destination $Destination -ErrorAction Stop
+   }
+   py -3 nvl-mode.py check --game "$GameCopy"
    ```
 
-   `ASAIRO_PREFIX` must point to an existing prepared prefix inside the Copy. Set `ASAIRO_WINE` to an absolute path if your compatible runtime is installed elsewhere. These variables apply to the current shell; set them again or use a local wrapper for future launches.
+   The final check must print `NVL`. The Windows workflow uses manual copying because the current `enable` and `disable` commands require Linux `pgrep`. Manual copying does not create automatic backups; keep your untouched game copy and saves.
 
-The launcher checks the installed payload, selects the native WinMM proxy, sets the Japanese locale and snapshots saves before launching. Logs go to `logs/target-runtime.log`. `nvl-hook-status.txt` inside the game Copy should report that the native NVL hooks are active.
+6. Launch `asairo.exe` from the patched game folder, using the same locale setup you use for the original game. No Wine launcher or Wine environment variables are needed on Windows. Check `nvl-hook-status.txt` in that folder to confirm the native NVL hooks are active.
 
-### Files installed
+If installation was interrupted, close the game and run the check again. An `INCOMPLETE` result with no unknown-file error can be repaired by copying all six files again and checking for `NVL`. Resolve any other error before copying or removing files.
+
+## Installation on Linux / Wine / Proton
+
+This workflow additionally requires Bash, `pgrep` from procps/procps-ng, `ja_JP.UTF-8`, a graphical session, and a compatible Wine/Proton runtime with the game's 32-bit dependencies. Prepare a **private Wine prefix inside the game copy** with Japanese fonts; the tested font is MS Gothic. Textractor is not required.
+
+From the repository root, set the path to an existing independent game copy, verify its executable against the hash above, generate the resources, and install with the game closed:
+
+```bash
+export GAME_COPY="$HOME/Games/Asairo (Copy)"
+sha256sum "$GAME_COPY/asairo.exe"
+python3 tools/prepare_payload.py --game "$GAME_COPY"
+python3 nvl-mode.py enable --game "$GAME_COPY"
+python3 nvl-mode.py check --game "$GAME_COPY"
+```
+
+Stop if any command fails. The final check should print `NVL`. Unknown loose overrides are refused rather than overwritten.
+
+Configure and run the launcher:
+
+```bash
+export ASAIRO_GAME_DIR="$GAME_COPY"
+export ASAIRO_PREFIX="$GAME_COPY/.wine-prepared"
+export ASAIRO_WINE="/usr/share/steam/compatibilitytools.d/proton-cachyos-slr/files/bin/wine"
+bash ./launch-target.sh
+```
+
+`ASAIRO_PREFIX` must point to an existing prepared prefix inside the copy. Set `ASAIRO_WINE` to the absolute path of your compatible runtime. These variables apply to the current shell; set them again or use a local wrapper for future launches.
+
+The launcher checks the payload, selects the native WinMM proxy, sets the Japanese locale and snapshots saves before launching. Logs go to `logs/target-runtime.log`. Check `nvl-hook-status.txt` inside the game copy for active hooks. If cloning a prefix, close its applications first and localize profile-folder symlinks; do not use a shared original prefix.
+
+## Files installed
 
 | File | Purpose |
 | --- | --- |
@@ -101,7 +135,7 @@ The launcher checks the installed payload, selects the native WinMM proxy, sets 
 | `BG/NV00.mgr` | Generated rounded native panel |
 | `winmm.dll` | Version-checked forwarding proxy and scoped hooks |
 
-The executable and MPK archives are not edited. Backups are stored in the Copy's `_nvl_backups/` directory with unique timestamps. Leave space for save snapshots; they accumulate across launches.
+The executable and MPK archives are not edited. The Linux installer and launcher store timestamped backups in the copy's `_nvl_backups/` folder. Save snapshots accumulate across launches. On Windows, back up saves yourself before testing or changing patch versions.
 
 ## Controls
 
@@ -123,6 +157,19 @@ The native configuration screen still controls text speed, sound and skip behavi
 
 ## Disable or reinstall
 
+**Load NVL saves with NVL enabled.** They reference the generated native panel. After disabling, use a pre-NVL save or start a new game.
+
+### Windows
+
+1. Close every instance of the game and back up your saves.
+2. From the repository folder, run `py -3 nvl-mode.py check --game "$GameCopy"`. A fully installed patch reports `NVL`. Stop on an unknown-file or version error.
+3. Back up the six installed files in the table above to a separate folder, preserving their relative paths. Then delete **only those six files** from the game copy. Keep the `Scenario` and `BG` folders and any other files inside them.
+4. Run the same check again; it should report `ADV`. Original archive resources now take effect.
+
+For a recognized `INCOMPLETE` installation, back up and remove only the listed files that are present, then check for `ADV`. To re-enable, follow the Windows installation steps again.
+
+### Linux / Wine / Proton
+
 Close every game instance first:
 
 ```bash
@@ -130,9 +177,7 @@ python3 nvl-mode.py disable --game "$GAME_COPY"
 python3 nvl-mode.py check --game "$GAME_COPY"  # ADV
 ```
 
-Only the six exact-hash overrides are removed, after backing them up. Original archive resources then take effect. Saves and archives are retained.
-
-**Load NVL saves with NVL enabled.** They reference the generated native panel. After disabling, use a pre-NVL save or start a new game. Re-enable with:
+Only the six exact-hash overrides are removed, after backing them up. Saves and archives are retained. Re-enable with:
 
 ```bash
 python3 nvl-mode.py enable --game "$GAME_COPY"
@@ -140,7 +185,7 @@ python3 nvl-mode.py enable --game "$GAME_COPY"
 
 ## Updating
 
-Before replacing a previous version, close the game and disable it using that version's installer and manifest. Keep its backups. Then update the repository, regenerate the resources, and enable the new version. This avoids treating an older DLL as an unknown override. Do not mix files from different versions or change manifest hashes merely to suppress an error.
+Close the game and disable the old patch using the instructions and manifest from that version. Keep its backups. Then update the repository, regenerate the resources, and install the new version. This avoids treating an older DLL as an unknown override. Do not mix files from different versions or change manifest hashes to suppress an error.
 
 ## How it was made
 
@@ -157,7 +202,7 @@ Two runtime hooks address native NVL edge cases:
 
 The page estimate never inserts line breaks or positions glyphs. The engine retains CP932 parsing, native measurement, kinsoku, ruby, waits, voice timing and backlog formatting. Menus, choices and special text layouts are not globally redirected. See [engine notes](docs/ENGINE.md) for addresses, commands, safeguards and implementation details.
 
-## Build the proxy from source
+## Build the proxy from source (Linux toolchain)
 
 The prebuilt `patch-files/winmm.dll` is the runtime-tested binary. To build a separate development DLL, install Python, Clang, LLD and a **32-bit Wine `libkernel32.a` import library**:
 
@@ -172,27 +217,35 @@ The verified toolchain was Python 3.14.7, Clang 22.1.8 and LLD 22.1.8, targeting
 
 ## Diagnostics and troubleshooting
 
-Tracing is disabled by default. Enable it for a short diagnostic session:
+Tracing is disabled by default. For a short diagnostic session on Windows, launch from PowerShell:
+
+```powershell
+$env:ASAIRO_NVL_TRACE = "1"
+Start-Process -FilePath "$GameCopy\asairo.exe" -WorkingDirectory "$GameCopy" -Wait
+Remove-Item Env:ASAIRO_NVL_TRACE
+```
+
+On Linux / Wine:
 
 ```bash
 ASAIRO_NVL_TRACE=1 bash ./launch-target.sh
 ```
 
-The Copy receives `nvl-trace.bin` and `nvl-state.bin`; prior traces and saves are backed up at launch. The first records raw CP932 message bytes and pagination decisions. The second records scoped native name/voice state. These are binary diagnostic files, not UTF-8 text files. Disable tracing for normal play.
+The game copy receives `nvl-trace.bin` and `nvl-state.bin`. The Wine launcher backs up prior traces and saves at launch; on Windows, copy any diagnostics you want to keep before starting another session. The first records raw CP932 message bytes and pagination decisions. The second records scoped native name/voice state. These are binary diagnostic files, not UTF-8 text files. Disable tracing for normal play.
 
 | Symptom | Check |
 | --- | --- |
 | Unsupported executable | Compare the SHA-256; this patch supports one executable version. |
 | Missing payload file | Run `tools/prepare_payload.py` before installation. |
-| `INCOMPLETE` state | Close the game and run `enable` or `disable` to finish a recognized partial installation. |
+| `INCOMPLETE` state | Close the game and follow the repair or removal steps for your platform. |
 | Unknown override or symlink refusal | Check for another mod or redirected directory. The installer leaves it untouched. |
-| ADV appearance remains | Launch through this script, check `NVL` status and inspect `nvl-hook-status.txt`. |
-| Missing/tofu Japanese glyphs | Check the private prefix's Japanese fonts and locale. Do not change scenario encoding. |
-| Voice is silent | Check native master/voice/character settings and the Wine audio output device. |
+| ADV appearance remains | Check for `NVL` and inspect `nvl-hook-status.txt`; use `launch-target.sh` on Wine. |
+| Missing/tofu Japanese glyphs | Check Japanese fonts and the locale setup used for the original game (inside the private prefix on Wine). Do not change scenario encoding. |
+| Voice is silent | Check native master/voice/character settings and your audio output device. |
 | A special scene looks different | Some centered/cinematic layouts are intentionally preserved. |
 | NVL save fails after disabling | Re-enable NVL before loading that save. |
 
-See [validation and limitations](docs/TESTING.md) for the exact test scope. Report a reproducible issue through the repository's Issues tab using the bug-report template. Include the executable hash, runtime, font, hook status and steps; do not upload the game or a full scenario dump.
+See [validation and limitations](docs/TESTING.md) for the exact test scope. Report a reproducible issue through the repository's Issues tab using the bug-report template. Include the executable hash, Windows version or Wine/Proton runtime, font, hook status and steps; do not upload the game or a full scenario dump.
 
 ## Project layout
 
@@ -200,7 +253,7 @@ See [validation and limitations](docs/TESTING.md) for the exact test scope. Repo
 readme.md                  Installation and usage
 LICENSE                    MIT license for original project code
 docs/                      Engine notes and validation scope
-nvl-mode.py                Checked installation and rollback
+nvl-mode.py                Payload checks; Linux installation and rollback
 launch-target.sh           Private-prefix Wine launcher
 tools/                     Local resource generation and source export
 hook/                      Proxy source, export catalog and build scripts
@@ -221,7 +274,7 @@ The export includes the files above and a checksum manifest. It does not publish
 
 Keep experiments inside independent Copies. Preserve native text parsing and calling conventions, tie binary changes to understood code, retain backups, and document actual gameplay checks. Test the affected layout plus save/load, voice and choices when relevant. Do not replace native Japanese wrapping with byte or character slicing.
 
-Prepare the payload and close the game before running the disposable installation checks:
+On Linux, prepare the payload and close the game before running the disposable installation checks (these exercise the installer that requires `pgrep`):
 
 ```bash
 python3 tests/check_installation.py --game "$GAME_COPY"
